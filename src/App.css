@@ -1,0 +1,77 @@
+.keyboard{
+  width: 570px;
+  margin : auto;
+  text-align: center;
+}
+.key{
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #313131;
+  border-radius: 7px;
+  margin : 5px;
+}
+.clicked { background-color: #313131; color : #fff; }
+
+.word{
+  text-align: center;
+  letter-spacing: 10px;
+}
+
+/* Replay Arrow */
+:root {
+  --width: 11px;
+}
+
+body {
+  overflow: hidden;
+}
+
+.arrow-box {
+  cursor: pointer;
+  color: #fff;
+  position: relative;
+  margin: auto;
+  width: 130px;
+  height: 30px;
+  background-color: #4C7F2E;
+  padding: 5px;
+  border-radius: 5px;
+}
+.txt-box{
+  margin: 6px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.arrow-box .arrow-round {
+  position: absolute;
+  right: 20px;
+  top: 11px;
+  width: var(--width);
+  height: var(--width);
+  border: calc(var(--width) / 4) solid #fff;
+  border-radius: 50%;
+  border-right-color: transparent;
+  -webkit-transition: -webkit-transform 0.8s;
+  transition: -webkit-transform 0.8s;
+  -o-transition: transform 0.8s;
+  transition: transform 0.8s;
+  transition: transform 0.8s, -webkit-transform 0.8s;
+}
+
+.arrow-box .arrow-round::after {
+  content: "";
+  position: absolute;
+  top: -22.5%;
+  left: 65%;
+  border: calc(var(--width) * 0.5) solid #fff;
+  border-bottom-color: #fff;
+  border-left-color: transparent;
+  border-top-width: 0;
+  border-right-width: 0;
+}
+
+.arrow-box:hover .arrow-round {
+  transform: rotate(1turn) ;
+}
