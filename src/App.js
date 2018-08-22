@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import Pendu from './Pendu';
+import EndScreen from './EndScreen';
+import Keyboard from './Keyboard'
 
-
-const Keyboard = (props) => <div className={`key ${props.feedback}`} onClick={() => props.onClick(props.letter)}>{props.letter}</div>
 const GuessWord = (props) => <p className="word">{props.phrase}</p>
-const Replay = (props) => <div className="arrow-box" onClick={() => props.onClick()}><p className="txt-box">Rejouer</p><div className="arrow-round"></div></div>
-
+const Score = (props) => <p className="score">score : {props.score}</p>
 
 
                                   
@@ -15,7 +14,8 @@ class App extends Component {
     phrase : this.getRandomPhrase(),
     usedLetters : [],
     matchedLetters : [],
-    pendu : 0
+    pendu : 0,
+    score : 0
 
   }
 
@@ -65,11 +65,12 @@ class App extends Component {
   }
 
  handleLetterClick = letter => {
-  const {usedLetters, phrase, matchedLetters, pendu} = this.state
+  const {usedLetters, phrase, matchedLetters, pendu, score} = this.state
 
   if (phrase.includes(letter) && !usedLetters.includes(letter) ) {
     this.setState({matchedLetters : [...matchedLetters,letter]})
      this.setState({ usedLetters: [...usedLetters,letter] })
+     this.setState({score : score + 3})
      console.log('tu es sur la bonne voie')
   }
 
@@ -77,11 +78,13 @@ class App extends Component {
      console.log('essaye encore')
     this.setState({ usedLetters: [...usedLetters,letter] })
     this.setState({pendu : pendu + 1})
+    this.setState({score : score - 2})
     
   }
   if (usedLetters.includes(letter)) {
     console.log('deja tenté')
     this.setState({pendu : pendu + 1})
+    this.setState({score : score - 1})
   }
   this.computeDisplay(phrase, usedLetters)
   console.log('le mot est : ', phrase);
@@ -90,21 +93,17 @@ class App extends Component {
     const { usedLetters } = this.state
     if (usedLetters.includes(letter)) {
       return 'clicked'
-  }
+    }
     
   }
-  handleReplayClick = () => {
+  playAgain = () => {
     const {usedLetters, phrase} = this.state
-    this.setState({usedLetters: [], matchedLetters: [], phrase : this.getRandomPhrase(),pendu : 0 })
+    this.setState({usedLetters: [], matchedLetters: [], phrase : this.getRandomPhrase(),pendu : 0, score: 0 })
     this.computeDisplay(phrase, usedLetters)
   }
   render() {
-    const Letters = (() => {
-      const caps = [...Array(26)].map((val, i) => String.fromCharCode(i + 65));
-      return caps
-    })();
 
-    const { phrase , usedLetters, matchedLetters } = this.state
+    const { phrase , usedLetters, matchedLetters,pendu } = this.state
 
     let arr = phrase.split('')
     let result = arr.sort().reduce((accumulator, current) => {
@@ -115,27 +114,29 @@ class App extends Component {
         return accumulator;
     }, []);
 
-    const won = result.length === matchedLetters.length
+
+
+    let won = result.length === matchedLetters.length
+
+    let endScreen = null
     
-    const replay = won ? (
+    if (won) {
+      endScreen = <EndScreen playAgain={this.playAgain} won={true}/>
+    }
+    if (pendu === 6) {
+      endScreen = <EndScreen playAgain={this.playAgain} won={false}/>
+    }
 
-        <Replay onClick={this.handleReplayClick} />           
-      
-      ) : (
-
-         <div className="keyboard">
-          {Letters.map((letter,index) => (
-          <Keyboard letter={letter} key={index} onClick={this.handleLetterClick} feedback={this.getFeedback(letter)} />
-          ))}   
-        </div>
-        
-      );
 
     return (
       <div className="app">
+        <Score score={this.state.score} />
         <Pendu pendu={this.state.pendu} />
         <GuessWord phrase={this.computeDisplay(phrase , usedLetters)} />
-        {replay}
+        <Keyboard getFeedback={this.getFeedback} handleLetterClick={this.handleLetterClick} />
+
+        {endScreen}
+        
       </div>
       
     );
