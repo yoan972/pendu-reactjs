@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
+import Pendu from './Pendu';
 
 
 const Keyboard = (props) => <div className={`key ${props.feedback}`} onClick={() => props.onClick(props.letter)}>{props.letter}</div>
 const GuessWord = (props) => <p className="word">{props.phrase}</p>
 const Replay = (props) => <div className="arrow-box" onClick={() => props.onClick()}><p className="txt-box">Rejouer</p><div className="arrow-round"></div></div>
+
+
 
                                   
 class App extends Component {
@@ -12,6 +15,7 @@ class App extends Component {
     phrase : this.getRandomPhrase(),
     usedLetters : [],
     matchedLetters : [],
+    pendu : 0
 
   }
 
@@ -61,22 +65,26 @@ class App extends Component {
   }
 
  handleLetterClick = letter => {
-  const {usedLetters, phrase, matchedLetters} = this.state
-
-  if(!usedLetters.includes(letter)) {
-  this.setState({ usedLetters: [...usedLetters,letter] })
-  console.log('etat mis à jour');
-  console.log('le mot est : ', phrase);
-  }else{
-  console.log('deja essayé')
-  }
+  const {usedLetters, phrase, matchedLetters, pendu} = this.state
 
   if (phrase.includes(letter) && !usedLetters.includes(letter) ) {
-  this.setState({matchedLetters : [...matchedLetters,letter]})
+    this.setState({matchedLetters : [...matchedLetters,letter]})
+     this.setState({ usedLetters: [...usedLetters,letter] })
+     console.log('tu es sur la bonne voie')
   }
-  
+
+  if(!phrase.includes(letter) && !usedLetters.includes(letter) ) {
+     console.log('essaye encore')
+    this.setState({ usedLetters: [...usedLetters,letter] })
+    this.setState({pendu : pendu + 1})
+    
+  }
+  if (usedLetters.includes(letter)) {
+    console.log('deja tenté')
+    this.setState({pendu : pendu + 1})
+  }
   this.computeDisplay(phrase, usedLetters)
-  
+  console.log('le mot est : ', phrase);
   }
   getFeedback = letter => {
     const { usedLetters } = this.state
@@ -87,10 +95,9 @@ class App extends Component {
   }
   handleReplayClick = () => {
     const {usedLetters, phrase} = this.state
-    this.setState({usedLetters: [], matchedLetters: [], phrase : this.getRandomPhrase() })
+    this.setState({usedLetters: [], matchedLetters: [], phrase : this.getRandomPhrase(),pendu : 0 })
     this.computeDisplay(phrase, usedLetters)
   }
-  
   render() {
     const Letters = (() => {
       const caps = [...Array(26)].map((val, i) => String.fromCharCode(i + 65));
@@ -125,7 +132,8 @@ class App extends Component {
       );
 
     return (
-      <div>
+      <div className="app">
+        <Pendu pendu={this.state.pendu} />
         <GuessWord phrase={this.computeDisplay(phrase , usedLetters)} />
         {replay}
       </div>

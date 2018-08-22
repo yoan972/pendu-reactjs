@@ -1,20 +1,33 @@
+.app{
+  width: 375px;
+  margin: auto;
+}
+.pendu{
+  text-align: center;
+}
 .keyboard{
-  width: 570px;
-  margin : auto;
   text-align: center;
 }
 .key{
   display: inline-block;
-  padding: 10px;
-  border: 1px solid #313131;
-  border-radius: 7px;
+  border: 1px solid #ffffff;
+  border-radius: 50%;
   margin : 5px;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  font-family: Quicksand, sans-serif;
+  font-size: 30px;
+  color: #fff;
+  font-weight: 400;
 }
-.clicked { background-color: #313131; color : #fff; }
+.clicked { background-color: #4edbc6; color : #fff; }
 
 .word{
   text-align: center;
   letter-spacing: 10px;
+  font-size: 30px;
+  margin: 2em 0;
 }
 
 /* Replay Arrow */
