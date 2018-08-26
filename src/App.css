@@ -1,3 +1,6 @@
+*{
+  box-sizing: border-box;
+}
 body {
   overflow: hidden;
 }
@@ -5,6 +8,7 @@ body {
   width: 100%;
   max-width: 375px;
   margin: auto;
+  background: linear-gradient(to bottom, #4edbc6, #3e6688);
 }
 
 /* Pendu */
@@ -16,13 +20,16 @@ body {
 .score{
   font-size: 30px;
   text-align: center;
-  margin-bottom: 2em;
+  margin-bottom: 1.5em;
+  margin-top: 0px;
+  padding-top: 1em;
 }
 
 /* Keyboard */
 
 .keyboard{
   text-align: center;
+  padding-bottom: 3em;
 }
 .key{
   display: inline-block;
@@ -45,7 +52,7 @@ body {
   text-align: center;
   letter-spacing: 10px;
   font-size: 30px;
-  margin: 2em 0;
+  margin: 1.5em 0;
 }
 
 /* EndScreen */
@@ -58,13 +65,14 @@ body {
   background-color: rgba(0, 0, 0, 0.8); 
   text-align: center;
 }
-.endscreen-title {
+.endscreen-title { 
   color: #fff;
   font-family: Quicksand, sans-serif;
   font-size: 40px;
   font-weight: 500;
+  margin-top: 7em;
 }
-.endscreen-replay {
+.endscreen-replay {  
   width: 150px;
   height: 40px;
   border-radius: 20px;
